@@ -25,7 +25,7 @@ import io.gatling.core.session.Expression
 trait WsJsonPathOfType {
   self: WsJsonPathCheckBuilder[String] =>
 
-  def ofType[X: JsonFilter] = new WsJsonPathCheckBuilder[X](path, extender)
+  def ofType[X: JsonFilter](implicit extractorFactory: JsonPathExtractorFactory) = new WsJsonPathCheckBuilder[X](path, extender)
 }
 
 object WsJsonPathCheckBuilder {
@@ -34,19 +34,19 @@ object WsJsonPathCheckBuilder {
     if (configuration.core.extract.jsonPath.preferJackson) handleParseException(Jackson.parse)
     else handleParseException(Boon.parse)
 
-  def jsonPath(path: Expression[String], extender: Extender[WsCheck, String]) =
+  def jsonPath(path: Expression[String], extender: Extender[WsCheck, String])(implicit extractorFactory: JsonPathExtractorFactory) =
     new WsJsonPathCheckBuilder[String](path, extender) with WsJsonPathOfType
 }
 
 class WsJsonPathCheckBuilder[X: JsonFilter](private[ws] val path: Expression[String],
-                                            private[ws] val extender: Extender[WsCheck, String])
+                                            private[ws] val extender: Extender[WsCheck, String])(implicit extractorFactory: JsonPathExtractorFactory)
     extends DefaultMultipleFindCheckBuilder[WsCheck, String, Any, X](
       extender,
       WsJsonPathCheckBuilder.WsJsonPathPreparer) {
 
-  def findExtractor(occurrence: Int) = path.map(new SingleJsonPathExtractor(_, occurrence))
+  import extractorFactory._
 
-  def findAllExtractor = path.map(new MultipleJsonPathExtractor(_))
-
-  def countExtractor = path.map(new CountJsonPathExtractor(_))
+  def findExtractor(occurrence: Int) = path.map(newSingleExtractor[X](_, occurrence))
+  def findAllExtractor = path.map(newMultipleExtractor[X])
+  def countExtractor = path.map(newCountExtractor)
 }

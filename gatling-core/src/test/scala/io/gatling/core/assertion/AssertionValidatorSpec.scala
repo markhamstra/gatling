@@ -15,7 +15,6 @@
  */
 package io.gatling.core.assertion
 
-import io.gatling.core.config.GatlingConfiguration
 import org.mockito.Mockito.when
 import org.scalatest.{ FlatSpec, Matchers }
 import org.scalatest.mock.MockitoSugar
@@ -26,8 +25,6 @@ import io.gatling.core.result.reader._
 import io.gatling.core.util.StringHelper.RichString
 
 class AssertionValidatorSpec extends FlatSpec with Matchers with MockitoSugar with AssertionSupport {
-
-  GatlingConfiguration.setUpForTest()
 
   private type Conditions = List[AssertionWithPathAndTarget => Assertion]
   private type StatsModifiers = List[Stats => Stats]

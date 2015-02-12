@@ -39,18 +39,19 @@ object GatlingConfiguration extends StrictLogging {
   private var thisConfiguration: GatlingConfiguration = _
   def configuration = thisConfiguration
 
+  // FIXME remove
   private[gatling] def set(config: GatlingConfiguration): Unit = thisConfiguration = config
 
-  def setUpForTest(props: mutable.Map[String, _ <: Any] = mutable.Map.empty) = {
+  def loadForTest(props: mutable.Map[String, _ <: Any] = mutable.Map.empty) = {
 
     val defaultsConfig = ConfigFactory.parseResources(getClass.getClassLoader, "gatling-defaults.conf")
     val propertiesConfig = ConfigFactory.parseMap(props + (data.Writers -> new ArrayList)) // Disable DataWriters by default
     val config = configChain(ConfigFactory.systemProperties, propertiesConfig, defaultsConfig)
-    thisConfiguration = mapToGatlingConfig(config)
-    thisConfiguration
+    mapToGatlingConfig(config)
   }
 
-  def setUp(props: mutable.Map[String, _ <: Any] = mutable.Map.empty): Unit = {
+  def load(props: mutable.Map[String, _ <: Any] = mutable.Map.empty): GatlingConfiguration = {
+
     sealed abstract class ObsoleteUsage(val message: String) { def path: String }
     case class Removed(path: String, advice: String) extends ObsoleteUsage(s"'$path' was removed, $advice.")
     case class Renamed(path: String, replacement: String) extends ObsoleteUsage(s"'$path' was renamed into $replacement.")
@@ -86,8 +87,11 @@ object GatlingConfiguration extends StrictLogging {
 
     warnAboutRemovedProperties(config)
 
-    thisConfiguration = mapToGatlingConfig(config)
+    mapToGatlingConfig(config)
   }
+
+  def setUp(props: mutable.Map[String, _ <: Any] = mutable.Map.empty): Unit =
+    thisConfiguration = load(props)
 
   private def mapToGatlingConfig(config: Config) =
     GatlingConfiguration(

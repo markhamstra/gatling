@@ -17,21 +17,17 @@ package io.gatling.http.cache
 
 import java.nio.charset.StandardCharsets._
 
-import io.gatling.core.result.message.RequestTimings
 import org.scalatest.{ FlatSpec, Matchers }
 import org.scalatest.mock.MockitoSugar
 
 import com.ning.http.client.{ FluentCaseInsensitiveStringsMap, HttpResponseStatus, RequestBuilder }
 
-import io.gatling.core.config.GatlingConfiguration
+import io.gatling.core.result.message.RequestTimings
 import io.gatling.http.{ HeaderNames, HeaderValues }
 import io.gatling.http.config.HttpProtocol
 import io.gatling.http.response.{ HttpResponse, ResponseBody }
 
 class CacheHandlingSpec extends FlatSpec with Matchers with MockitoSugar {
-
-  // Default config
-  GatlingConfiguration.setUpForTest()
 
   val defaultHttp = HttpProtocol.DefaultHttpProtocol
   val http = defaultHttp.copy(requestPart = defaultHttp.requestPart.copy(cache = true))

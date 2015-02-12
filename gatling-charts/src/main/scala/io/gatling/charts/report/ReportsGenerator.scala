@@ -18,15 +18,16 @@ package io.gatling.charts.report
 import java.nio.file.Path
 
 import io.gatling.charts.component.ComponentLibrary
-import io.gatling.charts.config.ChartsFiles.{ globalFile, menuFile }
+import io.gatling.charts.config.ChartsFiles._
 import io.gatling.charts.template.{ MenuTemplate, PageTemplate }
+import io.gatling.core.config.GatlingConfiguration
 import io.gatling.core.config.GatlingFiles._
 import io.gatling.core.result.RequestStatsPath
 import io.gatling.core.util.ScanHelper.deepCopyPackageContent
 
 private[gatling] object ReportsGenerator {
 
-  def generateFor(reportsGenerationInputs: ReportsGenerationInputs): Path = {
+  def generateFor(reportsGenerationInputs: ReportsGenerationInputs)(implicit configuration: GatlingConfiguration): Path = {
     import reportsGenerationInputs._
 
       def hasAtLeastOneRequestReported: Boolean =

@@ -19,7 +19,6 @@ import scala.collection.mutable
 
 import org.scalatest.{ FlatSpec, Matchers }
 
-import io.gatling.core.config.GatlingConfiguration
 import io.gatling.core.validation._
 import io.gatling.core.session.Session
 import io.gatling.core.test.ValidationValues
@@ -28,8 +27,6 @@ import io.gatling.jms.Predef._
 import io.gatling.jms.{ MockMessage, JmsCheck }
 
 class JmsXPathCheckSpec extends FlatSpec with Matchers with ValidationValues with MockMessage {
-
-  GatlingConfiguration.setUpForTest()
 
   implicit def cache = mutable.Map.empty[Any, Any]
 

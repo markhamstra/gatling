@@ -112,6 +112,9 @@ class Feeders {
       }
     }
     //#redis-1million
+
+    // hack so scalac stops complaining
+    generateOneMillionUrls()
   }
 
   {

@@ -16,6 +16,7 @@
 package io.gatling.http.request.builder
 
 import com.ning.http.client.Request
+import io.gatling.core.config.GatlingConfiguration
 
 import io.gatling.core.session._
 import io.gatling.http.{ HeaderValues, HeaderNames }
@@ -112,7 +113,7 @@ class HttpRequestBuilder(commonAttributes: CommonAttributes, val httpAttributes:
   private def formParam(formParam: HttpParam): HttpRequestBuilder =
     newInstance(httpAttributes.copy(formParams = httpAttributes.formParams ::: List(formParam))).asFormUrlEncoded
 
-  def formUpload(name: Expression[String], filePath: Expression[String]) = {
+  def formUpload(name: Expression[String], filePath: Expression[String])(implicit configuration: GatlingConfiguration) = {
 
     val file = RawFileBodies.asFile(filePath)
     val fileName = file.map(_.getName)

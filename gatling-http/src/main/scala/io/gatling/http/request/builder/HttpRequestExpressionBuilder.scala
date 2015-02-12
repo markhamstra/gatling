@@ -21,7 +21,7 @@ import com.ning.http.client.multipart.StringPart
 import com.ning.http.client.uri.Uri
 import com.ning.http.client.{ RequestBuilder => AHCRequestBuilder }
 
-import io.gatling.core.config.GatlingConfiguration._
+import io.gatling.core.config.GatlingConfiguration.configuration
 import io.gatling.core.session.Session
 import io.gatling.core.validation.{ FailureWrapper, SuccessWrapper, Validation }
 import io.gatling.http.{ HeaderNames, HeaderValues }

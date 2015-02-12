@@ -15,18 +15,19 @@
  */
 package io.gatling.charts.report
 
+import io.gatling.core.config.GatlingConfiguration
+
 import scala.collection.breakOut
 
 import io.gatling.charts.component.{ ComponentLibrary, GroupedCount, RequestStatistics, Statistics }
 import io.gatling.charts.config.ChartsFiles._
 import io.gatling.charts.result.reader.RequestPath
 import io.gatling.charts.template.{ ConsoleTemplate, StatsJsTemplate, StatsJsonTemplate }
-import io.gatling.core.config.GatlingConfiguration.configuration
 import io.gatling.core.result.{ Group, GroupStatsPath, RequestStatsPath }
 import io.gatling.core.result.message.{ KO, OK }
 import io.gatling.core.util.NumberHelper._
 
-private[charts] class StatsReportGenerator(reportsGenerationInputs: ReportsGenerationInputs, componentLibrary: ComponentLibrary) {
+private[charts] class StatsReportGenerator(reportsGenerationInputs: ReportsGenerationInputs, componentLibrary: ComponentLibrary)(implicit configuration: GatlingConfiguration) {
 
   import reportsGenerationInputs._
 

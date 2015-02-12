@@ -20,9 +20,10 @@ import java.net.URL
 import java.nio.charset.Charset
 import java.nio.file.Path
 
-import io.gatling.core.validation.{ FailureWrapper, SuccessWrapper, Validation }
+import io.gatling.core.config.GatlingFiles._
 import io.gatling.core.util.Io._
 import io.gatling.core.util.PathHelper._
+import io.gatling.core.validation.{ FailureWrapper, SuccessWrapper, Validation }
 
 object Resource {
 
@@ -61,8 +62,8 @@ object Resource {
 
   private class Location(val directory: Path, val path: String)
 
-  def feeder(fileName: String): Validation[Resource] = load(GatlingFiles.dataDirectory, fileName)
-  def body(fileName: String): Validation[Resource] = load(GatlingFiles.bodiesDirectory, fileName)
+  def feeder(fileName: String)(implicit configuration: GatlingConfiguration): Validation[Resource] = load(dataDirectory, fileName)
+  def body(fileName: String)(implicit configuration: GatlingConfiguration): Validation[Resource] = load(bodiesDirectory, fileName)
 }
 
 sealed trait Resource {

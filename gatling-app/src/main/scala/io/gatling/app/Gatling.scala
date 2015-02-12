@@ -29,7 +29,6 @@ import io.gatling.core.assertion.{ AssertionResult, AssertionValidator }
 import io.gatling.core.cli.StatusCode
 import io.gatling.core.config.GatlingFiles
 import io.gatling.core.config.GatlingConfiguration
-import io.gatling.core.config.GatlingConfiguration.configuration
 import io.gatling.core.result.reader.DataReader
 import io.gatling.core.runner.{ Runner, Selection }
 import io.gatling.core.scenario.Simulation
@@ -59,8 +58,15 @@ private[app] class Gatling(overrides: ConfigOverrides, simulationClass: Selected
 
   def start: StatusCode = {
     StringHelper.checkSupportedJavaVersion()
-    GatlingConfiguration.setUp(overrides)
+    implicit val configuration = GatlingConfiguration.load(overrides)
+    // FIXME set on Predef
+    new GatlingStarter(simulationClass).start
+  }
+}
 
+private[app] class GatlingStarter(simulationClass: SelectedSingleSimulation)(implicit configuration: GatlingConfiguration) {
+
+  def start: StatusCode = {
     val simulations = loadSimulations
     val singleSimulation = selectSingleSimulationIfPossible(simulations)
 
@@ -122,12 +128,12 @@ private[app] class Gatling(overrides: ConfigOverrides, simulationClass: Selected
 
       // -- Run Gatling -- //
       val selection = Selection(simulation, simulationId, runDescription)
-      Ga.send()
+      Ga.send(configuration)
       new Runner(selection).run
     }
   }
 
-  private def reportsGenerationEnabled =
+  private def reportsGenerationEnabled(implicit configuration: GatlingConfiguration) =
     configuration.data.fileDataWriterEnabled && !configuration.charting.noReports
 
   private def askSimulationId(clazz: Class[Simulation], defaultBaseName: String): String = {

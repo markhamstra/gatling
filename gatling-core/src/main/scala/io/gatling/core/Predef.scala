@@ -15,6 +15,8 @@
  */
 package io.gatling.core
 
+import io.gatling.core.config.GatlingConfiguration
+
 import scala.concurrent.duration._
 import scala.reflect.ClassTag
 
@@ -42,6 +44,8 @@ object Predef
   type Status = io.gatling.core.result.message.Status
   type Simulation = io.gatling.core.scenario.Simulation
   type Assertion = io.gatling.core.assertion.Assertion
+
+  implicit val configuration: GatlingConfiguration = ???
 
   implicit def stringToExpression[T: ClassTag](string: String): Expression[T] = string.el
   implicit def value2Success[T](value: T): Validation[T] = value.success

@@ -17,13 +17,10 @@ package io.gatling.charts.template
 
 import org.scalatest.{ FlatSpec, Matchers }
 
-import io.gatling.core.config.GatlingConfiguration
 import io.gatling.charts.component.Statistics
 import io.gatling.charts.component.GroupedCount
 
 class ConsoleTemplateSpec extends FlatSpec with Matchers {
-
-  GatlingConfiguration.setUpForTest()
 
   "console template" should "format the request counters properly" in {
     val numberOfRequestsStatistics = Statistics("numberOfRequestsStatistics", 20l, 19l, 1l)

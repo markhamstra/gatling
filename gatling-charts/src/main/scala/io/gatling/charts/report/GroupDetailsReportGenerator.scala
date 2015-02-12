@@ -16,14 +16,15 @@
 package io.gatling.charts.report
 
 import io.gatling.charts.component.{ Component, ComponentLibrary, ErrorsTableComponent, StatisticsTextComponent }
-import io.gatling.charts.config.ChartsFiles.requestFile
+import io.gatling.charts.config.ChartsFiles._
 import io.gatling.charts.template.GroupDetailsPageTemplate
 import io.gatling.charts.util.Colors._
+import io.gatling.core.config.GatlingConfiguration
 import io.gatling.core.result._
 import io.gatling.core.result.message.OK
 import io.gatling.charts.result.reader.RequestPath
 
-private[charts] class GroupDetailsReportGenerator(reportsGenerationInputs: ReportsGenerationInputs, componentLibrary: ComponentLibrary)
+private[charts] class GroupDetailsReportGenerator(reportsGenerationInputs: ReportsGenerationInputs, componentLibrary: ComponentLibrary)(implicit configuration: GatlingConfiguration)
     extends ReportGenerator {
 
   def generate(): Unit = {

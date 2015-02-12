@@ -17,12 +17,9 @@ package io.gatling.http.config
 
 import org.scalatest.{ FlatSpec, Matchers }
 
-import io.gatling.core.config.GatlingConfiguration
 import io.gatling.http.request.ExtraInfo
 
 class HttpProtocolBuilderSpec extends FlatSpec with Matchers {
-
-  GatlingConfiguration.setUpForTest()
 
   "http protocol configuration builder" should "support an optional extra info extractor" in {
 

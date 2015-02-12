@@ -18,7 +18,7 @@ package io.gatling.http.check.body
 import com.typesafe.scalalogging.StrictLogging
 
 import io.gatling.core.check.{ DefaultMultipleFindCheckBuilder, Preparer }
-import io.gatling.core.check.extractor.jsonpath.{ CountJsonPathExtractor, JsonFilter, MultipleJsonPathExtractor, SingleJsonPathExtractor }
+import io.gatling.core.check.extractor.jsonpath._
 import io.gatling.core.config.GatlingConfiguration.configuration
 import io.gatling.core.json.{ Jackson, Boon }
 import io.gatling.core.session.{ Expression, RichExpression }
@@ -29,7 +29,7 @@ import io.gatling.http.response.{ ByteArrayResponseBodyUsage, InputStreamRespons
 trait HttpBodyJsonPathOfType {
   self: HttpBodyJsonPathCheckBuilder[String] =>
 
-  def ofType[X: JsonFilter] = new HttpBodyJsonPathCheckBuilder[X](path)
+  def ofType[X: JsonFilter](implicit extractorFactory: JsonPathExtractorFactory) = new HttpBodyJsonPathCheckBuilder[X](path)
 }
 
 object HttpBodyJsonPathCheckBuilder extends StrictLogging {
@@ -79,15 +79,17 @@ object HttpBodyJsonPathCheckBuilder extends StrictLogging {
     if (configuration.core.extract.jsonPath.preferJackson) JacksonResponseBodyUsageStrategy
     else BoonResponseBodyUsageStrategy
 
-  def jsonPath(path: Expression[String]) = new HttpBodyJsonPathCheckBuilder[String](path) with HttpBodyJsonPathOfType
+  def jsonPath(path: Expression[String])(implicit extractorFactory: JsonPathExtractorFactory) = new HttpBodyJsonPathCheckBuilder[String](path) with HttpBodyJsonPathOfType
 }
 
-class HttpBodyJsonPathCheckBuilder[X: JsonFilter](private[body] val path: Expression[String])
+class HttpBodyJsonPathCheckBuilder[X: JsonFilter](private[body] val path: Expression[String])(implicit extractorFactory: JsonPathExtractorFactory)
     extends DefaultMultipleFindCheckBuilder[HttpCheck, Response, Any, X](
       HttpCheckBuilders.bodyExtender(HttpBodyJsonPathCheckBuilder.ResponseBodyUsageStrategy),
       HttpBodyJsonPathCheckBuilder.Preparer) {
 
-  def findExtractor(occurrence: Int) = path.map(new SingleJsonPathExtractor(_, occurrence))
-  def findAllExtractor = path.map(new MultipleJsonPathExtractor(_))
-  def countExtractor = path.map(new CountJsonPathExtractor(_))
+  import extractorFactory._
+
+  def findExtractor(occurrence: Int) = path.map(newSingleExtractor[X](_, occurrence))
+  def findAllExtractor = path.map(newMultipleExtractor[X])
+  def countExtractor = path.map(newCountExtractor)
 }

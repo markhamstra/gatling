@@ -19,7 +19,6 @@ import java.nio.charset.StandardCharsets._
 
 import io.gatling.core.Predef._
 import io.gatling.core.check.CheckResult
-import io.gatling.core.config.GatlingConfiguration
 import io.gatling.core.session._
 import io.gatling.core.test.ValidationValues
 import io.gatling.http.Predef._
@@ -32,8 +31,6 @@ import scala.collection.mutable
 import scala.xml.Elem
 
 class HttpBodyXPathCheckSpec extends FlatSpec with Matchers with ValidationValues with MockitoSugar {
-
-  GatlingConfiguration.setUpForTest()
 
   implicit def cache = mutable.Map.empty[Any, Any]
 

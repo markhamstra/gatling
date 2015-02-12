@@ -21,11 +21,7 @@ import scala.collection.mutable
 
 import org.scalatest.{ FlatSpec, Matchers }
 
-import io.gatling.core.config.GatlingConfiguration
-
 class ConsoleDataWriterSpec extends FlatSpec with Matchers {
-
-  GatlingConfiguration.setUpForTest()
 
   val time = new GregorianCalendar(2012, 8, 24, 13, 37).getTime
 

@@ -19,13 +19,10 @@ import org.scalatest.{ FlatSpec, Matchers }
 
 import com.ning.http.client.uri.Uri
 
-import io.gatling.core.config.GatlingConfiguration
 import io.gatling.core.session.Session
 import io.gatling.http.MockUtils
 
 class PermanentRedirectSpec extends FlatSpec with Matchers {
-
-  GatlingConfiguration.setUpForTest()
 
   class Context {
     var session = Session("mockSession", "mockUserName")

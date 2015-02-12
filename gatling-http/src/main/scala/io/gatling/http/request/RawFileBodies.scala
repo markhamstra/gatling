@@ -18,7 +18,7 @@ package io.gatling.http.request
 import java.io.File
 
 import io.gatling.core.config.GatlingConfiguration.configuration
-import io.gatling.core.config.Resource
+import io.gatling.core.config.{ GatlingConfiguration, Resource }
 import io.gatling.core.session.Expression
 import io.gatling.core.util.cache._
 import io.gatling.core.util.Io._
@@ -28,7 +28,7 @@ object RawFileBodies {
 
   val RawFileBodyCache = ThreadSafeCache[String, Validation[File]](configuration.http.rawFileBodiesCacheMaxCapacity)
 
-  def asFile(filePath: Expression[String]): Expression[File] = {
+  def asFile(filePath: Expression[String])(implicit configuration: GatlingConfiguration): Expression[File] = {
 
       def pathToFile(path: String) =
         if (RawFileBodyCache.enabled) RawFileBodyCache.getOrElsePutIfAbsent(path, Resource.body(path).map(_.file))

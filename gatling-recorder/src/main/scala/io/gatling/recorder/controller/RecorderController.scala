@@ -19,6 +19,7 @@ import java.nio.file.Path
 import java.util.concurrent.ConcurrentLinkedQueue
 
 import com.ning.http.client.uri.Uri
+import io.gatling.core.config.GatlingConfiguration
 import io.gatling.recorder.http.handler.remote.TimedHttpRequest
 
 import scala.collection.JavaConversions._

@@ -15,6 +15,9 @@
  */
 package io.gatling.http
 
+import java.io.InputStream
+
+import io.gatling.core.config.GatlingConfiguration
 import io.gatling.core.result.message.KO
 import io.gatling.core.session.Expression
 import io.gatling.http.action.{ AddCookieBuilder, CookieDSL }
@@ -62,24 +65,24 @@ object Predef extends HttpCheckSupport with WsCheckSupport with SitemapFeederSup
   def Cookie = CookieDSL
 
   @deprecated("Use ElFileBody instead", "2.2.0")
-  def ELFileBody = ElFileBody
-  def ElFileBody = io.gatling.http.request.ElFileBody
-  def StringBody(string: String) = io.gatling.http.request.CompositeByteArrayBody(string)
-  def StringBody(string: Expression[String]) = io.gatling.http.request.StringBody(string)
-  def RawFileBody = io.gatling.http.request.RawFileBody
-  def ByteArrayBody = io.gatling.http.request.ByteArrayBody
-  def InputStreamBody = io.gatling.http.request.InputStreamBody
+  def ELFileBody(filePath: Expression[String])(implicit configuration: GatlingConfiguration) = ElFileBody(filePath)
+  def ElFileBody(filePath: Expression[String])(implicit configuration: GatlingConfiguration) = io.gatling.http.request.ElFileBody(filePath)
+  def RawFileBody(filePath: Expression[String])(implicit configuration: GatlingConfiguration) = io.gatling.http.request.RawFileBody(filePath)
+  def StringBody(string: String)(implicit configuration: GatlingConfiguration) = io.gatling.http.request.CompositeByteArrayBody(string)
+  def StringBody(string: Expression[String])(implicit configuration: GatlingConfiguration) = io.gatling.http.request.StringBody(string)
+  def ByteArrayBody(bytes: Expression[Array[Byte]]) = io.gatling.http.request.ByteArrayBody(bytes)
+  def InputStreamBody(is: Expression[InputStream]) = io.gatling.http.request.InputStreamBody(is)
 
   @deprecated("Use ElFileBody instead", "2.2.0")
-  def ELFileBodyPart(filePath: Expression[String]): BodyPart = ElFileBodyPart(filePath)
-  def ElFileBodyPart(filePath: Expression[String]): BodyPart = BodyPart.elFileBodyPart(None, filePath)
+  def ELFileBodyPart(filePath: Expression[String])(implicit configuration: GatlingConfiguration): BodyPart = ElFileBodyPart(filePath)
+  def ElFileBodyPart(filePath: Expression[String])(implicit configuration: GatlingConfiguration): BodyPart = BodyPart.elFileBodyPart(None, filePath)
   @deprecated("Use ElFileBody instead", "2.2.0")
-  def ELFileBodyPart(name: Expression[String], filePath: Expression[String]): BodyPart = ElFileBodyPart(name, filePath)
-  def ElFileBodyPart(name: Expression[String], filePath: Expression[String]): BodyPart = BodyPart.elFileBodyPart(Some(name), filePath)
+  def ELFileBodyPart(name: Expression[String], filePath: Expression[String])(implicit configuration: GatlingConfiguration): BodyPart = ElFileBodyPart(name, filePath)
+  def ElFileBodyPart(name: Expression[String], filePath: Expression[String])(implicit configuration: GatlingConfiguration): BodyPart = BodyPart.elFileBodyPart(Some(name), filePath)
+  def RawFileBodyPart(filePath: Expression[String])(implicit configuration: GatlingConfiguration): BodyPart = BodyPart.rawFileBodyPart(None, filePath)
+  def RawFileBodyPart(name: Expression[String], filePath: Expression[String])(implicit configuration: GatlingConfiguration): BodyPart = BodyPart.rawFileBodyPart(Some(name), filePath)
   def StringBodyPart(string: Expression[String]): BodyPart = BodyPart.stringBodyPart(None, string)
   def StringBodyPart(name: Expression[String], string: Expression[String]): BodyPart = BodyPart.stringBodyPart(Some(name), string)
-  def RawFileBodyPart(filePath: Expression[String]): BodyPart = BodyPart.rawFileBodyPart(None, filePath)
-  def RawFileBodyPart(name: Expression[String], filePath: Expression[String]): BodyPart = BodyPart.rawFileBodyPart(Some(name), filePath)
   def ByteArrayBodyPart(bytes: Expression[Array[Byte]]): BodyPart = BodyPart.byteArrayBodyPart(None, bytes)
   def ByteArrayBodyPart(name: Expression[String], bytes: Expression[Array[Byte]]): BodyPart = BodyPart.byteArrayBodyPart(Some(name), bytes)
 }

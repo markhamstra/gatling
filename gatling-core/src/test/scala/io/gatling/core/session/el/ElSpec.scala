@@ -26,8 +26,6 @@ import io.gatling.core.test.ValidationValues
 
 class ElSpec extends FlatSpec with Matchers with ValidationValues {
 
-  GatlingConfiguration.setUpForTest()
-
   def newSession(contents: Map[String, Any]) =
     Session("scenario", "1", contents)
 

@@ -22,15 +22,12 @@ import org.scalatest.mock.MockitoSugar
 
 import com.ning.http.client.uri.Uri
 
-import io.gatling.core.config.GatlingConfiguration
 import io.gatling.core.session._
 import io.gatling.http.ahc.{ HttpEngine, HttpTx }
 import io.gatling.http.cache.PermanentRedirect
 import io.gatling.http.MockUtils
 
 class HttpRequestActionSpec extends FlatSpec with Matchers with MockitoSugar {
-
-  GatlingConfiguration.setUpForTest()
 
   trait Context {
     val httpEngineMock = mock[HttpEngine]

@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * http://www.apache.org/licenses/LICENSE-2.0
+ * 		http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,15 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.gatling.jms.check
+package io.gatling.core
 
-import io.gatling.core.check.extractor.xpath.{ JdkXPathExtractorFactory, SaxonXPathExtractorFactory }
-import io.gatling.core.session.Expression
+import io.gatling.core.check.extractor.jsonpath.{ JsonPaths, JsonPathExtractorFactory }
+import io.gatling.core.check.extractor.regex.{ Patterns, RegexExtractorFactory }
+import io.gatling.core.config.GatlingConfiguration
 
-trait JmsCheckSupport {
+trait CoreImplicits {
 
-  def simpleCheck = JmsSimpleCheck
+  implicit def configuration: GatlingConfiguration
 
-  def xpath(expression: Expression[String], namespaces: List[(String, String)] = Nil)(implicit saxonXPathExtractorFactory: SaxonXPathExtractorFactory, jdkXPathExtractorFactory: JdkXPathExtractorFactory) =
-    JmsXPathCheckBuilder.xpath(expression, namespaces)
+  implicit lazy val patterns = new Patterns
+  implicit lazy val regexExtractorFactory = new RegexExtractorFactory
+
+  implicit lazy val jsonPaths = new JsonPaths
+  implicit lazy val jsonPathExtractorFactory = new JsonPathExtractorFactory
+
 }

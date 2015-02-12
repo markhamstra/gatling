@@ -18,6 +18,7 @@ package io.gatling.charts.result.reader
 import java.io.InputStream
 
 import io.gatling.core.assertion.{ AssertionParser, Assertion }
+import io.gatling.core.config.GatlingConfiguration
 
 import scala.collection.breakOut
 import scala.collection.mutable
@@ -27,8 +28,7 @@ import com.typesafe.scalalogging.StrictLogging
 
 import io.gatling.charts.result.reader.buffers.{ PercentilesBuffers, CountBuffer, GeneralStatsBuffer }
 import io.gatling.charts.result.reader.stats.StatsHelper
-import io.gatling.core.config.GatlingConfiguration.configuration
-import io.gatling.core.config.GatlingFiles.simulationLogDirectory
+import io.gatling.core.config.GatlingFiles._
 import io.gatling.core.result._
 import io.gatling.core.result.message.{ KO, OK, Status }
 import io.gatling.core.result.reader.{ DataReader, GeneralStats }
@@ -43,7 +43,8 @@ object FileDataReader {
   val SimulationFilesNamePattern = """.*\.log"""
 }
 
-class FileDataReader(runUuid: String) extends DataReader(runUuid) with StrictLogging {
+class FileDataReader(runUuid: String)(implicit configuration: GatlingConfiguration)
+    extends DataReader(runUuid) with StrictLogging {
 
   import FileDataReader._
 

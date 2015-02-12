@@ -49,6 +49,7 @@ object DataWriter extends AkkaDefaults {
     _instances = {
       val dw = configuration.data.dataWriterClasses.map { className =>
         val clazz = Class.forName(className).asInstanceOf[Class[Actor]]
+        // FIXME pass implicit configuration parameter
         system.actorOf(Props(clazz), clazz.getSimpleName)
       }
 

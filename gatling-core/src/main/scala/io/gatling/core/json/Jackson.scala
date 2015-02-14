@@ -19,9 +19,7 @@ import java.io.{ InputStream, InputStreamReader }
 import java.nio.charset.Charset
 import java.nio.charset.StandardCharsets._
 
-import com.fasterxml.jackson.core.JsonParser.Feature
 import com.fasterxml.jackson.databind.ObjectMapper
-import io.gatling.core.config.GatlingConfiguration.configuration
 import io.gatling.core.util.{ CharsetHelper, FastByteArrayInputStream }
 
 object Jackson extends JsonParser {
@@ -29,9 +27,6 @@ object Jackson extends JsonParser {
   val JsonSupportedEncodings = Vector(UTF_8, UTF_16, CharsetHelper.UTF_32)
 
   val TheObjectMapper = new ObjectMapper
-  TheObjectMapper.configure(Feature.ALLOW_COMMENTS, configuration.core.extract.jsonPath.jackson.allowComments)
-  TheObjectMapper.configure(Feature.ALLOW_SINGLE_QUOTES, configuration.core.extract.jsonPath.jackson.allowSingleQuotes)
-  TheObjectMapper.configure(Feature.ALLOW_UNQUOTED_FIELD_NAMES, configuration.core.extract.jsonPath.jackson.allowUnquotedFieldNames)
 
   def parse(bytes: Array[Byte], charset: Charset) =
     if (JsonSupportedEncodings.contains(charset)) {

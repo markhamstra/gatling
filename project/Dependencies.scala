@@ -6,7 +6,7 @@ object Dependencies {
   /** Compile dependencies **/
   /**************************/
 
-  private val akkaVersion                    = "2.3.7"
+  private val akkaVersion                    = "2.3.4-spark"
 
   private def scalaLibrary(version: String)  = "org.scala-lang"                         % "scala-library"               % version
   private def scalaCompiler(version: String) = "org.scala-lang"                         % "scala-compiler"              % version
@@ -14,7 +14,7 @@ object Dependencies {
   private def scalaSwing(version: String)    = "org.scala-lang"                         % "scala-swing"                 % version
   private val ahc                            = "com.ning"                               % "async-http-client"           % "1.9.0-BETA21"
   private val netty                          = "io.netty"                               % "netty"                       % "3.9.5.Final"
-  private val akkaActor                      = "com.typesafe.akka"                     %% "akka-actor"                  % akkaVersion
+  private val akkaActor                      = "org.spark-project.akka"                %% "akka-actor"                  % akkaVersion
   private val config                         = "com.typesafe"                           % "config"                      % "1.2.1"
   private val saxon                          = "net.sf.saxon"                           % "Saxon-HE"                    % "9.6.0-2"
   private val slf4jApi                       = "org.slf4j"                              % "slf4j-api"                   % "1.7.7"
@@ -41,7 +41,7 @@ object Dependencies {
   /***********************/
 
   private val scalaTest                      = "org.scalatest"                         %% "scalatest"                   % "2.2.2"       % "test"
-  private val akkaTestKit                    = "com.typesafe.akka"                     %% "akka-testkit"                % akkaVersion   % "test"
+  private val akkaTestKit                    = "org.spark-project.akka"                %% "akka-testkit"                % akkaVersion   % "test"
   private val mockitoCore                    = "org.mockito"                            % "mockito-core"                % "1.9.5"       % "test"
   private val activemqCore                   = "org.apache.activemq"                    % "activemq-broker"             % "5.8.0"       % "test"
   private val sprayCan                       = "io.spray"                              %% "spray-can"                   % "1.3.2"       % "test"
